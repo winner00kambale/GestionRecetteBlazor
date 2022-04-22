@@ -1,0 +1,90 @@
+﻿@using Recettes_Soft.Data.classes
+@using Recettes_Soft.Data.interfaces
+@inject IBeneficiaire Ibeneficiaireservice
+@inject IFonction fonctionservice
+@inject NavigationManager NavigationManager
+@page "/editbeneficiaire/{code:int}"
+
+<div class="content-wrapper mt-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div class="container">
+                    <h3 class="mt-2">Modifier Le Beneficiaire</h3>
+                    @if (benef == null)
+                    {
+                        <p>loading data in table...</p>
+                    }
+                    else
+                    {
+                        <form>
+                            <div class="form-group">
+                                <label class="control-label">nom</label>
+                                <input type="text" name="nom" id="nom" class="form-control" placeholder="saisir le nom" @bind="@benef.nom" required />
+                                <label class="control-label">postnom</label>
+                                <input type="text" name="postnom" id="postnom" class="form-control" placeholder="saisir le postnom" @bind="@benef.postnom" required />
+                                <label class="control-label">genre</label>
+                                <select name="sexe" id="sexe" class="form-control" @bind="@benef.sexe" required>
+                                    <option value="">... selectionner le sexe</option>
+                                    <option value="M">M</option>
+                                    <option value="F">F</option>
+                                </select>
+                                <label class="control-label">residence</label>
+                                <input type="text" name="residence" id="residence" class="form-control" placeholder="saisir la residence" @bind="@benef.residence" required />
+                                <label class="control-label">telephone</label>
+                                <input type="tel" name="telephone" id="telephone" class="form-control" placeholder="saisir le numero telephone" @bind="@benef.tel" required />
+                                <label>Fonction</label>
+                                <select name="sexe" id="sexe" class="form-control" @bind="@benef.id" required>
+                                    <option value="">... selectionner la fonction</option>
+                                    @if (fonc == null)
+                                    {
+
+                                    }
+                                    else
+                                    {
+                                        @foreach (var f in fonc)
+                                        {
+                                            <option value="@f.id">@f.design</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <input type="submit" class="btn btn-primary mb-2" @onclick="@UpdateBenefic" value="Modifier" />
+                                <input type="button" class="btn btn-outline-danger" @onclick="@fermer" value="Cancel" />
+                            </div>
+
+                            <br />
+                        </form>
+                    }
+                </div>
+
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+</div>
+@code {
+    IEnumerable<Fonctions> fonc;
+    [Parameter]
+    public int code { get; set; }
+    Beneficiaire benef = new Beneficiaire();
+    //on innitialise(overide) on recupere les differentes values;
+    protected override async Task OnInitializedAsync()
+    {
+        benef = await Ibeneficiaireservice.SingleBeneficiaire(code);
+        fonc = await fonctionservice.Getfonction();
+
+    }
+    protected async Task UpdateBenefic()
+    {
+        await Ibeneficiaireservice.EditBeneficiaire(code, benef);
+        NavigationManager.NavigateTo("/beneficiare");
+    }
+    void fermer()
+    {
+        NavigationManager.NavigateTo("/beneficiare");
+    }
+
+}

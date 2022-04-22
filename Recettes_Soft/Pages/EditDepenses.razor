@@ -1,0 +1,106 @@
+﻿@using Recettes_Soft.Data.classes
+@using Recettes_Soft.Data.interfaces
+@inject IDepense_services depenseservice
+@inject ICategDepense catdepenseservice
+@inject IBeneficiaire beneficiaireservice
+@inject NavigationManager NavigationManager
+@page "/esditdepenses/{id_dep:int}"
+
+<div class="content-wrapper mt-3">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <h3>Modifier Depenses</h3>
+            @if (depens == null)
+            {
+                <p>loading data in table...</p>
+            }
+            else
+            {
+                <form>
+                    <div class="form-group">
+                        <input type="text" name="motif" id="motif" class="form-control" placeholder="saisir le motif" @bind="depens.motif" />
+                    </div>
+                    <div class="form-group">
+                        <input type="number" name="montant" id="montant" class="form-control" placeholder="saisir le montant" min="0" oninput="this.value=Math.abs(this.value)" @bind="depens.montant" />
+                    </div>
+                    <div class="form-group">
+                        <select name="categorie" class="form-control" @bind="depens.id">
+                            <option value="">... selectionner la categorie</option>
+                            @if (catedep == null)
+                            {
+                                <option value="">data is loading ...</option>
+                            }
+                            else
+                            {
+                                @foreach (var d in catedep)
+                                {
+                                    <option value="@d.id">@d.designation</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select name="beneficiaire" class="form-control" @bind="depens.beneficiaire">
+                            <option value="">... selectionner le beneficiaire</option>
+                            @if (beneciaire == null)
+                            {
+                                <option value="">data is loading ...</option>
+                            }
+                            else
+                            {
+                                @foreach (var b in beneciaire)
+                                {
+                                    <option value="@b.code">@b.nom  @b.postnom</option>
+                                }
+                            }
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="autorisation" id="autorisation" class="form-control" placeholder="saisir l'autorisation" @bind="depens.autorisation" required />
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="libelle" id="libelle" class="form-control" placeholder="saisir le libelle" @bind="depens.libelle" />
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="user" id="user" class="form-control" placeholder="saisir l'utilisateur" @bind="depens.users" />
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <input type="submit" class="btn btn-primary mb-2" @onclick="@UpdateDepense" value="Modifier" />
+                        <input type="button" class="btn btn-outline-danger" @onclick="@fermer" value="Cancel" />
+                    </div>
+                </form>
+            }
+
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</div>>
+
+@code {
+    IEnumerable<Categoriedepense> catedep;
+    IEnumerable<Beneficiaire> beneciaire;
+    [Parameter]
+    public int id_dep { get; set; }
+    Depenses depens = new Depenses();
+    //on innitialise(overide) on recupere les differentes values;
+    protected override async Task OnInitializedAsync()
+    {
+        depens = await depenseservice.SingleDepense(id_dep);
+        catedep = await catdepenseservice.Getcategdepense();
+        beneciaire = await beneficiaireservice.GetBeneficiaire();
+
+    }
+    protected async Task UpdateDepense()
+    {
+        await depenseservice.EditDepense(id_dep, depens);
+        NavigationManager.NavigateTo("/depense");
+    }
+    void fermer()
+    {
+        NavigationManager.NavigateTo("/depense");
+    }
+
+
+}

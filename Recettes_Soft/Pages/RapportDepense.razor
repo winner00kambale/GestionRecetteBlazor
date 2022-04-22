@@ -1,0 +1,66 @@
+﻿@using Recettes_Soft.Data
+@using Recettes_Soft.Data.classes
+@using Recettes_Soft.Data.interfaces
+@inject IDepense_services DepenseService
+@page "/Rappot_depense"
+
+<div class="image">
+    <img src="dist/img/logo.jpg" style="width:70px;height:70px;" class="img-circle elevation-0" alt="User Image">
+    <a>ECC CBCA</a>
+</div>
+<h2 style="text-align:center">Rapport Journalier de Depense</h2>
+
+<div class="row">
+    <div class="col-12">
+        @if (depenses == null)
+        {
+            <p>loading data in table...</p>
+        }
+        else
+        {
+            <table id="example2" class="table table-bordered table-striped mt-2 table-hover">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>Motif</th>
+                        <th>Montant</th>
+                        <th>Categorie</th>
+                        <th>beneficiaire</th>
+                        <th>autorisation</th>
+                        <th>libelle</th>
+                        <th>Dates</th>
+                        <th>users</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in depenses)
+                    {
+                    <tr>
+                        <td>@d.id_dep</td>
+                        <td>@d.motif</td>
+                        <td>@d.montant</td>
+                        <td>@d.designation</td>
+                        <td>@d.noms</td>
+                        <td>@d.autorisation</td>
+                        <td>@d.libelle</td>
+                        <td>@d.dates</td>
+                        <td>@d.users</td>
+                    </tr>
+                    }
+                </tbody>
+                <tfoot>
+
+                </tfoot>
+            </table>
+        }
+
+    </div>
+</div>
+
+@code {
+    IEnumerable<Depenses> depenses;
+    protected override async Task OnInitializedAsync()
+    {
+        depenses = await DepenseService.GetRapportDepenses();
+    }
+}

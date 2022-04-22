@@ -1,0 +1,63 @@
+﻿@using Recettes_Soft.Data
+@using Recettes_Soft.Data.classes
+@using Recettes_Soft.Data.interfaces
+@inject IRecettes_services recetteservice
+@page "/Rappot_recette"
+
+
+<div class="image">
+    <img src="dist/img/logo.jpg" style="width:70px;height:70px;" class="img-circle elevation-0" alt="User Image">
+    <a>ECC CBCA</a>
+</div>
+<h2 style="text-align:center">Rapport Journalier du Recette</h2>
+  
+<div class="row">
+    <div class="col-12">
+        @if (recettes == null)
+        {
+            <p>loading data in table...</p>
+        }
+        else
+        {
+            <table id="example2" class="table table-bordered table-striped mt-2 table-hover">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>Motif</th>
+                        <th>Montant</th>
+                        <th>Categorie</th>
+                        <th>Users</th>
+                        <th>Dates</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in recettes)
+                    {
+                        <tr>
+                            <td>@r.id_rec</td>
+                            <td>@r.motif</td>
+                            <td>@r.montant</td>
+                            <td>@r.design</td>
+                            <td>@r.users</td>
+                            <td>@r.dates</td>
+                            
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+
+                </tfoot>
+            </table>
+        }
+
+    </div>
+</div>
+@code {
+    IEnumerable<Recettes> recettes;
+    protected override async Task OnInitializedAsync()
+    {
+        recettes = await recetteservice.GetRapportRecettes();
+    }
+
+
+}

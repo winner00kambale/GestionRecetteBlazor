@@ -1,0 +1,182 @@
+﻿
+@using Recettes_Soft.Data.classes
+@using Recettes_Soft.Data.interfaces
+@using Recettes_Soft.Data.services
+@inject IBeneficiaire beneficiaireService
+@inject IFonction fonctionservice
+@inject NavigationManager NavigationManager
+@page "/beneficiare"
+
+<nav class="main-header navbar navbar-expand navbar-white layout-navbar-fixed navbar-light">
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+    </ul>
+</nav>
+
+<div class="content-wrapper mt-2">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default">
+        + Add Beneficiaire
+    </button>
+    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-fonction">
+        + Add Fonction
+    </button>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    @if (beneficiare == null)
+                    {
+                        <p>data is loading ...</p>
+                    }
+                    else
+                    {
+                        <table id="example2" class="table table-bordered table-sm table-striped mt-2 table-hover">
+                            <thead>
+                                <tr>
+                                    <th>id</th>
+                                    <th>Nom</th>
+                                    <th>Postnom</th>
+                                    <th>Sexe</th>
+                                    <th>Residence</th>
+                                    <th>Telephone</th>
+                                    <th>Fonction</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var b in beneficiare)
+                                {
+                                <tr>
+                                    <td>@b.code</td>
+                                    <td>@b.nom</td>
+                                    <td>@b.postnom</td>
+                                    <td>@b.sexe</td>
+                                    <td>@b.residence</td>
+                                    <td>@b.tel</td>
+                                    <td>@b.design</td>
+                                    <td>
+                                        <a href="/editbeneficiaire/@b.code" class="btn btn-warning">Edit</a>
+                                        <a href="" class="btn btn-danger">delete</a>
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                    
+                            </tfoot>
+                        </table>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+    @*modal rectte*@
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h4 class="modal-title">New Beneficiaire</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <input type="text" name="nom" id="nom" class="form-control" placeholder="saisir le nom" @bind="@benefic.nom" required />
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="postnom" id="postnom" class="form-control" placeholder="saisir le postnom" @bind="@benefic.postnom" required />
+                        </div>
+                        <div class="form-group">
+                            <select name="sexe" id="sexe" class="form-control" @bind="@benefic.sexe" required>
+                                <option value="">... selectionner le sexe</option>
+                                <option value="M">M</option>
+                                <option value="F">F</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="residence" id="residence" class="form-control" placeholder="saisir la residence" @bind="@benefic.residence" required />
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" name="telephone" id="telephone" class="form-control" placeholder="saisir le numero telephone" @bind="@benefic.tel" required />
+                        </div>
+                        <div class="form-group">
+                            <select name="sexe" id="sexe" class="form-control" @bind="@benefic.id" required>
+                                <option value="">... selectionner la fonction</option>
+                                @if (fonc == null)
+                                {
+
+                                }
+                                else
+                                {
+                                    @foreach (var f in fonc)
+                                    {
+                                        <option value="@f.id">@f.design</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        
+                        <input type="submit" class="btn btn-primary" value="Enregistrer" @onclick="@CreateBenef" />
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    @*<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Enregistrer</button>*@
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    @*modal categorie*@
+    <div class="modal fade" id="modal-fonction" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h4 class="modal-title" id="myModalLabel">Add Categorie</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label>designation</label>
+                            <input type="text" name="designation" id="designation" class="form-control" placeholder="saisir la designation" @bind="@catfonction.design" required />
+                        </div>
+                        <input type="submit" value="Enregistrer" class="btn btn-primary" @onclick="@Createfonction">
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    @*<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>*@
+                    @*<button type="button" class="btn btn-primary" @onclick="@CreateCatRec">Enregistrer</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+    Beneficiaire benefic = new Beneficiaire();
+    Fonctions catfonction = new Fonctions();
+    IEnumerable<Beneficiaire> beneficiare;
+    IEnumerable<Fonctions> fonc;
+    protected async Task CreateBenef()
+    {
+        await beneficiaireService.CreateBeneficiaire(benefic);
+        NavigationManager.NavigateTo("beneficiare");
+    }
+    protected async Task Createfonction()
+    {
+        await fonctionservice.CreateFonction(catfonction);
+        NavigationManager.NavigateTo("beneficiare");
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        beneficiare = await beneficiaireService.GetBeneficiaire();
+        fonc = await fonctionservice.Getfonction();
+    }
+
+}
+
+

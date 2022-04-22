@@ -1,0 +1,77 @@
+﻿@using Recettes_Soft.Data.classes
+@using Recettes_Soft.Data.interfaces
+@using Recettes_Soft.Data.services
+@inject ICategRecette categrecservice
+@inject IRecettes_services recetteservice
+@inject NavigationManager NavigationManager
+@page "/editrecettea/{id_rec:int}"
+
+
+<div class="content-wrapper mt-3">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <h3>Modifier Recettes</h3>
+            <form>
+                <div class="form-group">
+                    <input type="text" name="motif" id="motif" class="form-control" placeholder="saisir le motif" @bind="@recetties.motif" required />
+                </div>
+                <div class="form-group">
+                    <input type="number" name="montant" id="montant" class="form-control" placeholder="saisir le montant" min="0" oninput="this.value=Math.abs(this.value)" @bind="@recetties.montant" required />
+                </div>
+                <div class="form-group">
+                    <select class="form-control" @bind="@recetties.id">
+                        <option value="">... selectionner la categorie</option>
+                        @if (caterec == null)
+                        {
+                            <option value="">data is loading ...</option>
+                        }
+                        else
+                        {
+                            @foreach (var r in caterec)
+                            {
+                                <option value="@r.id">@r.designation</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="user" id="user" class="form-control" placeholder="saisir l'utilisateur" @bind="@recetties.users" required />
+                </div>
+                <div class="form-group">
+                    <input type="date" name="date" id="date" class="form-control" placeholder="saisir la date" @bind="@recetties.dates" required />
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <input type="submit" class="btn btn-primary mb-2" @onclick="@UpdateRecette" value="Modifier" />
+                    <input type="button" class="btn btn-outline-danger" @onclick="@fermer" value="Cancel" />
+                </div>
+            </form>
+
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</div>
+
+@code {
+    IEnumerable<CategorieRecette> caterec;
+    [Parameter]
+    public int id_rec { get; set; }
+    Recettes recetties = new Recettes();
+    //on innitialise(overide) on recupere les differentes values;
+    protected override async Task OnInitializedAsync()
+    {
+        recetties = await recetteservice.SingleRecette(id_rec);
+        caterec = await categrecservice.Getcategrecette();
+
+    }
+    protected async Task UpdateRecette()
+    {
+        await recetteservice.EditRecette(id_rec, recetties);
+        NavigationManager.NavigateTo("/recette");
+    }
+    void fermer()
+    {
+        NavigationManager.NavigateTo("/recette");
+    }
+
+}
