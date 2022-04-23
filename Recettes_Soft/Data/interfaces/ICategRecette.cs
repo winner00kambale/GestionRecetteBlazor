@@ -10,5 +10,6 @@ namespace Recettes_Soft.Data.interfaces
     {
         Task<bool> CreateCatRec(CategorieRecette categrecette);
         Task<IEnumerable<CategorieRecette>> Getcategrecette();
+        Task<IEnumerable<CategorieRecette>> GetMontantReceette();
     }
 }

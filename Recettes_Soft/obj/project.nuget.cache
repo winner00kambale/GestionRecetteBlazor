@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "9eOOReioD9sWTsuQI0rARbChDGdRWh8pf8VZbbq/biBsXPncooURDgTXZGp0/wyl86RGJV6Nxx4MaJW40ZkEhQ==",
+  "dgSpecHash": "IXxV5mN6y+IM2/orkNHUaMK/R7MPYqdz+cjnMb5oyeWwvc3l/kW+QEgxu9de00m/pUQiagcBGTnD3LvaUouyzA==",
   "success": true,
-  "projectFilePath": "E:\\Mes documents\\L1\\C#\\Recettes_Soft\\Recettes_Soft\\Recettes_Soft.csproj",
+  "projectFilePath": "E:\\Mes documents\\L1\\C#\\github\\GestionRecetteBlazor\\Recettes_Soft\\Recettes_Soft.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\winnerPC\\.nuget\\packages\\azure.core\\1.6.0\\azure.core.1.6.0.nupkg.sha512",
     "C:\\Users\\winnerPC\\.nuget\\packages\\azure.identity\\1.3.0\\azure.identity.1.3.0.nupkg.sha512",

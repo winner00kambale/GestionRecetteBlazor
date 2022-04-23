@@ -61,5 +61,28 @@ namespace Recettes_Soft.Data.services
             }
             return catrec;
         }
+
+        public async Task<IEnumerable<CategorieRecette>> GetMontantReceette()
+        {
+            IEnumerable<CategorieRecette> MontantRecette;
+            using (var conn = new SqlConnection(_Configuration.value))
+            {
+                const string query = @"select sum(montant)tot,count(*)nbr from recettes";
+                if (conn.State == ConnectionState.Closed) conn.Open();
+                try
+                {
+                    MontantRecette = await conn.QueryAsync<CategorieRecette>(query);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    if (conn.State == ConnectionState.Open) conn.Close();
+                }
+            }
+            return MontantRecette;
+        }
     }
 }

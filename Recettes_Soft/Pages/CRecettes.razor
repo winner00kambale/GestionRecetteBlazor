@@ -15,7 +15,7 @@
     </nav>
         <div class="content-wrapper mt-2">
                 <div class="pl-5">
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-default">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default">
                         New Recette
                     </button>
                     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-categorie">
@@ -164,7 +164,7 @@
             protected async Task EnregistrerRecette()
             {
                 await recetteservice.CreateRecette(recetties);
-                NavigationManager.NavigateTo("recette");
+                NavigationManager.NavigateTo("/recette");
             }
 
         }

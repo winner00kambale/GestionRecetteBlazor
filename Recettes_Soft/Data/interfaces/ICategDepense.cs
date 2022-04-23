@@ -10,5 +10,6 @@ namespace Recettes_Soft.Data.interfaces
     {
         Task<bool> CreateCatDep(Categoriedepense categdepense);
         Task<IEnumerable<Categoriedepense>> Getcategdepense();
+        Task<IEnumerable<Categoriedepense>> GetMontantDepense();
     }
 }

@@ -1672,11 +1672,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Mes documents\\L1\\C#\\Recettes_Soft\\Recettes_Soft\\Recettes_Soft.csproj",
+      "projectUniqueName": "E:\\Mes documents\\L1\\C#\\github\\GestionRecetteBlazor\\Recettes_Soft\\Recettes_Soft.csproj",
       "projectName": "Recettes_Soft",
-      "projectPath": "E:\\Mes documents\\L1\\C#\\Recettes_Soft\\Recettes_Soft\\Recettes_Soft.csproj",
+      "projectPath": "E:\\Mes documents\\L1\\C#\\github\\GestionRecetteBlazor\\Recettes_Soft\\Recettes_Soft.csproj",
       "packagesPath": "C:\\Users\\winnerPC\\.nuget\\packages\\",
-      "outputPath": "E:\\Mes documents\\L1\\C#\\Recettes_Soft\\Recettes_Soft\\obj\\",
+      "outputPath": "E:\\Mes documents\\L1\\C#\\github\\GestionRecetteBlazor\\Recettes_Soft\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\winnerPC\\AppData\\Roaming\\NuGet\\NuGet.Config",

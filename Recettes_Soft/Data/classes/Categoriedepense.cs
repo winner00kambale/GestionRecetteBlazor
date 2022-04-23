@@ -9,5 +9,8 @@ namespace Recettes_Soft.Data.classes
     {
         public int id { get; set; }
         public string designation { get; set; }
+        public float tot { get; set; }
+        public int nbr { get; set; }
+           
     }
 }

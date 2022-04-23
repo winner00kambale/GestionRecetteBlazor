@@ -61,6 +61,28 @@ namespace Recettes_Soft.Data.services
             }
             return catdep;
         }
+        public async Task<IEnumerable<Categoriedepense>> GetMontantDepense()
+        {
+            IEnumerable<Categoriedepense> Montantdepense;
+            using (var conn = new SqlConnection(_Configuration.value))
+            {
+                const string query = @"select sum(montant)tot,count(*)nbr from depenses";
+                if (conn.State == ConnectionState.Closed) conn.Open();
+                try
+                {
+                    Montantdepense = await conn.QueryAsync<Categoriedepense>(query);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    if (conn.State == ConnectionState.Open) conn.Close();
+                }
+            }
+            return Montantdepense;
+        }
     }
     }
 

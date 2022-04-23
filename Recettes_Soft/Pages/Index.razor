@@ -1,5 +1,10 @@
 ﻿
+@using Recettes_Soft.Data.classes
+@using Recettes_Soft.Data.interfaces
+@using Recettes_Soft.Data.services
 @page "/"
+@inject ICategRecette categrecservice
+@inject ICategDepense categdepense
 <div class="wrapper">
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -28,94 +33,124 @@
                         <div class="card">
                             <div class="card-header border-0">
                                 <div class="d-flex justify-content-between">
-                                    <h3 class="card-title">Montant Total Recettes</h3>
-                                    @*<a href="javascript:void(0);">View Report</a>*@
+                                    <h2 class="card-title">Montant Total Recettes</h2>
                                 </div>
                             </div>
                             <div class="card-body">
                                 <div class="d-flex">
                                     <p class="d-flex flex-column">
-                                        <span class="text-bold text-lg">820</span>
+                                        @if (totalRecette == null)
+                                        {
+                                        <p>data is loaging ...</p>
+                                    }
+                                    else
+                                    {
+                                        @foreach (var total in totalRecette)
+                                        {
+                                            <h1>@total.tot  $</h1>
+                                            <h2>Nombre : @total.nbr  Recettes</h2>
+
+                                        }
+                                    }
                                         <span>Visitors Over Time</span>
-                                    </p>
-                                    <p class="ml-auto d-flex flex-column text-right">
-                                        <span class="text-success">
-                                            <i class="fas fa-arrow-up"></i> 12.5%
+                                        </p>
+                                        <p class="ml-auto d-flex flex-column text-right">
+                                            <span class="text-success">
+                                                <i class="fas fa-arrow-up"></i> 12.5%
+                                            </span>
+                                            @*<span class="text-muted">Montant Total Depenses</span>*@
+                                        </p>
+                                    </div>
+                                    <!-- /.d-flex -->
+
+                                    <div class="position-relative mb-4">
+                                        <canvas id="visitors-chart" height="200"></canvas>
+                                    </div>
+
+                                    <div class="d-flex flex-row justify-content-end">
+                                        <span class="mr-2">
+                                            <i class="fas fa-square text-primary"></i> This Week
                                         </span>
-                                        @*<span class="text-muted">Montant Total Depenses</span>*@
-                                    </p>
-                                </div>
-                                <!-- /.d-flex -->
 
-                                <div class="position-relative mb-4">
-                                    <canvas id="visitors-chart" height="200"></canvas>
-                                </div>
-
-                                <div class="d-flex flex-row justify-content-end">
-                                    <span class="mr-2">
-                                        <i class="fas fa-square text-primary"></i> This Week
-                                    </span>
-
-                                    <span>
-                                        <i class="fas fa-square text-gray"></i> Last Week
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </div>
-                    <!-- /.col-md-6 -->
-                    <div class="col-lg-6">
-                        <div class="card">
-                            <div class="card-header border-0">
-                                <div class="d-flex justify-content-between">
-                                    <h3 class="card-title">Montant Total Depenses</h3>
-                                    @*<a href="javascript:void(0);">View Report</a>*@
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="d-flex">
-                                    <p class="d-flex flex-column">
-                                        <span class="text-bold text-lg">$18,230.00</span>
-                                        <span>Sales Over Time</span>
-                                    </p>
-                                    <p class="ml-auto d-flex flex-column text-right">
-                                        <span class="text-success">
-                                            <i class="fas fa-arrow-up"></i> 33.1%
+                                        <span>
+                                            <i class="fas fa-square text-gray"></i> Last Week
                                         </span>
-                                        <span class="text-muted">Since last month</span>
-                                    </p>
-                                </div>
-                                <!-- /.d-flex -->
-
-                                <div class="position-relative mb-4">
-                                    <canvas id="sales-chart" height="200"></canvas>
-                                </div>
-
-                                <div class="d-flex flex-row justify-content-end">
-                                    <span class="mr-2">
-                                        <i class="fas fa-square text-primary"></i> This year
-                                    </span>
-
-                                    <span>
-                                        <i class="fas fa-square text-gray"></i> Last year
-                                    </span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- /.card -->
 
-                        
+                        </div>
+                        <!-- /.col-md-6 -->
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-header border-0">
+                                    <div class="d-flex justify-content-between">
+                                        <h2 class="card-title">Montant Total Depenses</h2>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex">
+                                        <p class="d-flex flex-column">
+                                            @if (totalDepense == null)
+                                            {
+                                            <p>data is loaging ...</p>
+                                        }
+                                        else
+                                        {
+                                            @foreach (var totaldep in totalDepense)
+                                            {
+                                                <h1>@totaldep.tot  $</h1>
+                                                <h2>Nombre : @totaldep.nbr  Depenses </h2>
+                                            }
+                                        }
+                                            <span>Sales Over Time</span>
+                                            </p>
+                                            <p class="ml-auto d-flex flex-column text-right">
+                                                <span class="text-success">
+                                                    <i class="fas fa-arrow-up"></i> 33.1%
+                                                </span>
+                                                <span class="text-muted">Since last month</span>
+                                            </p>
+                                        </div>
+                                    <!-- /.d-flex -->
+
+                                    <div class="position-relative mb-4">
+                                        <canvas id="sales-chart" height="200"></canvas>
+                                    </div>
+
+                                    <div class="d-flex flex-row justify-content-end">
+                                        <span class="mr-2">
+                                            <i class="fas fa-square text-primary"></i> This year
+                                        </span>
+
+                                        <span>
+                                            <i class="fas fa-square text-gray"></i> Last year
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.card -->
+
+
+                        </div>
+                        <!-- /.col-md-6 -->
                     </div>
-                    <!-- /.col-md-6 -->
+                    <!-- /.row -->
                 </div>
-                <!-- /.row -->
+                <!-- /.container-fluid -->
             </div>
-            <!-- /.container-fluid -->
+            <!-- /.content -->
         </div>
-        <!-- /.content -->
+        <!-- /.content-wrapper -->
+
     </div>
-    <!-- /.content-wrapper -->
-   
-</div>
-<!-- ./wrapper -->
+    <!-- ./wrapper -->
+    @code{
+        IEnumerable<CategorieRecette> totalRecette;
+        IEnumerable<Categoriedepense> totalDepense;
+        protected override async Task OnInitializedAsync()
+        {
+            totalRecette = await categrecservice.GetMontantReceette();
+            totalDepense = await categdepense.GetMontantDepense();
+        }
+    }
